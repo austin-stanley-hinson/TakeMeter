@@ -54,34 +54,84 @@
      The decision rule is worth a point on its own and it's the thing most
      people leave out. Every taxonomy has a hardest boundary. Name yours. -->
 
-### `label_one`
+Four labels for r/csmajors comments. Every comment gets exactly one. They come
+from four distinctions I saw while reading 69 comments (`notes/milestone1.md`)
+and were tightened by a stress test (`notes/stress_test.md`).
 
-**Definition:**
+### `experience`
 
-**Example 1:**
->
-
-**Example 2:**
->
-
-### `label_two`
-
-**Definition:**
+**Definition:** Reports something that happened to the writer, with an outcome
+or a measured detail: an offer, a rejection, an invite, pay, a timeline or a
+count.
 
 **Example 1:**
->
+> i finished the OA at 10:30 PM on the 23rd of September, recruiter emailed me asking for some info and scheduling on the 25th of September. got the times/date for the two interviews a day later.
 
 **Example 2:**
->
+> 160 base, 320 that vests across 4 years + a relocation bonus (can't say and not included because you could lowkey try and doxx me with it). This is at an established firm, not a startup.
+
+### `argued`
+
+**Definition:** Makes a claim about the field or gives advice, and backs it
+with a reason the reader could check: a company practice, a recruiting step, a
+number, or something the writer or others saw happen.
+
+**Example 1:**
+> I am also under review. According to sources online for JPMC, under review means it passed ATS and is sitting in queue. Under consideration means a recruiter reviewed your resume, verified basic qualifications, and shortlisted your app to the hiring manager. So im ngl its pretty unlikely we get anything because we haven't even been seen by the normal recruiter yet obv dont lose hope.
+
+**Example 2:**
+> Try changing up your resume or getting it professionally reviewed. If you're not getting interviews it usually is something with your resume not passing the ATS auto scan. This market is awful though so you also have to pump out tons of applications to be getting them.
+
+### `hot_take`
+
+**Definition:** Makes a confident claim or gives advice with no checkable reason
+offered, or with a "reason" that is only another claim.
+
+**Example 1:**
+> this is a classic case of Computer Science majors thinking if they dont get into FAANG, then they've failed at life. And that is tied into the Computer Science Superiority Complex
+
+**Example 2:**
+> AI is here to stay and it will only get better. But ya, reality is depressing in some ways.
+
+### `chatter`
+
+**Definition:** Adds no claim and no outcome: questions, status check-ins,
+support, venting and jokes.
+
+**Example 1:**
+> did you get the offer,or currently under screening process?
+
+**Example 2:**
+> Same but i got a bf but no job(my bf on other hand has maang job and a gf 😭)
 
 ### The hardest boundary
 
-**Which two labels:**
+**Which two labels:** `argued` and `hot_take`. r/csmajors is full of claims
+with a "because" attached, and whether the "because" counts decides the label.
 
-**The decision rule I used every time:**
-<!-- e.g. "If the post names a specific checkable fact, it's `analysis`, even
-     if the tone is heated." -->
+**The decision rule I used every time:** It's `argued` only if the reason
+points to something the reader could check: a specific company practice, a
+recruiting step, a number, or something the writer or others saw happen. If the
+reason is a guess about motives or a sweeping claim about "everyone" or "the
+market," it's `hot_take`, however sensible it sounds.
 
+**The post that made me write it:**
+> A lot of times those big companies have a resume screen after the initial OA since they wanna cast a bigger net to get everyone good enough.
+> Trading firms give out OAs all the time but interviews sre much rare.
+
+The "since they wanna cast a bigger net" part is a guess about motive and on its
+own would make this `hot_take`. The trading-firm pattern (lots of OAs, few
+interviews) is a company practice anyone recruiting this cycle can check, so
+under the rule it's `argued`.
+
+**Two smaller rules the stress test forced:**
+
+- **A first-hand outcome wins.** If a comment reports the writer's own outcome
+  or measured detail, it's `experience` even if it also draws a conclusion
+  ("I did 400 leetcode and still bombed the OA, so grinding doesn't work").
+- **Waiting isn't an outcome.** "Had my powerday Monday, still nothing, anyone
+  else?" is `chatter`. "Finished the OA 3 weeks ago and haven't heard back"
+  gives a measured wait, so it's `experience`.
 
 
 ---

@@ -51,63 +51,77 @@ whether you hit them:
 
 ---
 
-## 1.
+Context for every number below: about 240 comments, so the 15% test split is
+about 36 comments and one comment moves accuracy by about 3 points. Four labels
+means a random guess gets 25%. I expect `chatter` to be the biggest label at
+roughly 35–40%, so always guessing `chatter` scores about that. Every target
+has to hold on all three seeds (42, 7, 2024).
 
-<!-- Your criterion. It must name a number. -->
+## 1. Overall accuracy
 
+Overall accuracy on the held-out test split is **at least 0.55** on all three
+seeds.
 
-
-**Why this target:**
-
-
-
----
-
-## 2.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
+**Why this target:** 0.55 is 15–20 points above always guessing `chatter` and
+more than twice chance. That's what I'd call useful for short, slangy Reddit
+comments. With about 36 test comments, it leaves roughly two comments of slack
+for seed noise before a miss.
 
 ---
 
-## 3.
+## 2. The three bigger labels
 
-<!-- Your criterion. -->
+`experience`, `hot_take` and `chatter` each have a test-split F1 of **at least
+0.50** on all three seeds.
 
-
-
-**Why this target:**
-
-
-
----
-
-## 4.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
+**Why this target:** each of these should have 8 or more test examples, so
+their F1 is steadier than `argued`'s. `experience` has strong surface signals
+(numbers, "I got", "OA", company names) and `chatter` has question marks and
+emoji, so 0.50 should be reachable. `hot_take` is the one at risk, because it's
+defined partly by what's *missing* (no checkable reason). If it misses, that's
+where I'd look first.
 
 ---
 
-## 5.
+## 3. `argued`
 
-<!-- Your criterion. -->
+`argued` has a test-split F1 of **at least 0.30** on all three seeds.
 
+**Why this target:** `argued` is my smallest label and sits on my hardest
+boundary (`argued` vs `hot_take`, decided by whether the reason is checkable).
+At about 12% of the data, only 4–5 `argued` comments land in the test split, so
+its F1 swings the most of any label, which is why it's looser than criterion 2.
+It still fails the most likely bad outcome: a model that never predicts
+`argued` scores 0. Getting 2 of 5 right with a couple of false alarms would
+already pass.
 
+---
 
-**Why this target:**
+## 4. Confidence means something
 
+The most-confident third of test predictions is **at least 15 points more
+accurate** than the least-confident third, on all three seeds
+(`accuracy_most_confident_third − accuracy_least_confident_third` in
+`results.json`).
 
+**Why this target:** each third is about 12 comments, so 15 points is roughly
+two more correct answers in the confident third. Anything smaller is within
+noise at this size. If the model is as often wrong when it's sure as when it's
+guessing, its confidence can't be used to decide which predictions to trust,
+and that should fail.
+
+---
+
+## 5. Labelling consistency
+
+I agree with the staff labels on **at least 21 of the 30** staff posts (70%),
+labelling under the staff taxonomy in `data/staff_taxonomy.md`.
+
+**Why this target:** the staff set's `analysis` vs `hot_take` rule tests the
+same skill as my `argued` vs `hot_take` rule: does the reason given count as
+support? Several of the 30 are deliberately ambiguous, so 100% isn't realistic.
+Below 70% would mean I apply written rules loosely, and that would be a
+labelling explanation, not a model one, for a miss on criterion 2 or 3.
 
 ---
 

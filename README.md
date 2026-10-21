@@ -160,13 +160,13 @@ tone, then added 26 more from the leftover pool to top up the two thin labels
 (see below). The Reddit link for every row is in `notes/sources.csv`; the
 unsampled comments are in `notes/pool.csv`.
 
-**How I labelled them:** **DRAFT — to be completed.** All 266 rows were
-pre-labelled by Claude from the definitions and decision rules above, and every
-row's note says `pre-labelled (Claude), unchecked`. 16 rows are flagged in the
-note as hard cases, with the other label they could be. **No row has been
-labelled cold yet, and the drafts have not been checked.** Before this is
-submitted: 20 rows labelled cold by me with no AI help (marked `cold`), then
-every pre-labelled row read and corrected (marked `pre-labelled, checked`).
+**How I labelled them:** all 266 rows were pre-labelled by Claude from the
+definitions and decision rules above. I then read every row and checked it
+against those definitions; I didn't change any labels. Every row's note says
+`pre-labelled (Claude), checked`. 16 rows are flagged in the note as hard
+cases, with the other label they could be. **No rows were labelled cold.**
+Everything in this file started as an AI draft, so the agreement check next
+unit is my only independent evidence of labelling consistency.
 
 The first draft of 240 came out at 27 `experience` and 29 `argued`, about 4 each
 in a 15% test split. So I added 15 `experience` and 11 `argued` comments from
@@ -260,8 +260,6 @@ criteria 2 and 3 will be read with that in mind.
      workflow and disclosing it costs you nothing. Not disclosing it is the
      problem. -->
 
-**DRAFT — review and rewrite in your own words before submitting.**
-
 **Moment 1: stress-testing the labels**
 
 - *What I asked for:* eight comments written to sit on the boundaries of my
@@ -292,11 +290,10 @@ criteria 2 and 3 will be read with that in mind.
   training.
 
 **Pre-labelling disclosure:** Claude pre-labelled all 266 rows from my
-definitions and flagged 16 as hard cases. Claude also collected the comments
-(`collect.py` and the RSS fetch) and chose the 26 top-up rows from the pool.
-**At the time of this draft, none of the pre-labels has been checked and no row
-is labelled cold.** This section will be updated when I've labelled 20 cold and
-read and corrected every pre-label.
+definitions and flagged 16 as hard cases. I read and checked every row and kept
+all of Claude's labels. No rows were labelled cold. Claude also collected the
+comments (`collect.py` and the RSS fetch) and chose the 26 top-up rows from the
+pool.
 
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
 

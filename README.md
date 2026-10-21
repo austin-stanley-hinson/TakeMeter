@@ -42,7 +42,15 @@
 <!-- Your community, and what your classifier sorts posts into. Three or four
      sentences. -->
 
-
+TakeMeter sorts comments from **r/csmajors**, the public subreddit for computer
+science students, into four kinds: `experience` (the writer reports what
+happened to them, with an outcome or a number), `argued` (a claim or advice
+backed by something the reader could check), `hot_take` (a confident claim with
+no checkable support) and `chatter` (questions, check-ins, support, venting and
+jokes). It's a fine-tuned DistilBERT trained on 266 comments I collected and
+labelled. The point is to separate the comments worth reading in a recruiting
+thread, a real data point or a checkable argument, from the confident noise
+around them.
 
 ---
 
@@ -141,45 +149,66 @@ under the rule it's `argued`.
 <!-- Where you collected from, how you labelled, your counts, and three hard
      cases. -->
 
-**Where the posts came from:**
+**Where the posts came from:** public r/csmajors comments collected on
+2026-10-14, from two sources: the PullPush archive (100 recent comments) and
+Reddit's public RSS feeds (the 100 most recent comments, plus the comment feeds
+of 10 of the month's top threads). That gave 1,012 comments. `collect.py`
+dropped 280 of them: under 40 characters ("lol", "same"), deleted, bot notices,
+non-English, link-only, the threads' own posts, and duplicates. That left 732.
+I sampled 20 from each of the 12 sources (240) so no single thread sets the
+tone, then added 26 more from the leftover pool to top up the two thin labels
+(see below). The Reddit link for every row is in `notes/sources.csv`; the
+unsampled comments are in `notes/pool.csv`.
 
-**How I labelled them:** <!-- Cold first? Pre-labelled with AI and corrected?
-Say so plainly — the disclosure is required, not penalised. -->
+**How I labelled them:** **DRAFT — to be completed.** All 266 rows were
+pre-labelled by Claude from the definitions and decision rules above, and every
+row's note says `pre-labelled (Claude), unchecked`. 16 rows are flagged in the
+note as hard cases, with the other label they could be. **No row has been
+labelled cold yet, and the drafts have not been checked.** Before this is
+submitted: 20 rows labelled cold by me with no AI help (marked `cold`), then
+every pre-labelled row read and corrected (marked `pre-labelled, checked`).
+
+The first draft of 240 came out at 27 `experience` and 29 `argued`, about 4 each
+in a 15% test split. So I added 15 `experience` and 11 `argued` comments from
+the pool. Those 26 are marked `added from pool to top up <label>`. That means
+the thin labels were partly chosen *for* their label, not sampled at random,
+which I'll keep in mind if their scores look too good.
 
 **Counts per label:**
 
 | Label | Count | Share |
 |---|---|---|
-|  |  |  |
-|  |  |  |
-|  |  |  |
-| **Total** |  | 100% |
+| `chatter` | 102 | 38.3% |
+| `hot_take` | 82 | 30.8% |
+| `experience` | 42 | 15.8% |
+| `argued` | 40 | 15.0% |
+| **Total** | 266 | 100% |
+
+No label is above 70%. `chatter` is the biggest at 38%, so always guessing it
+scores about 0.38.
 
 **Three hard cases**
 
-<!-- Any post that made you pause: what it was, which two labels it could have
-     been, and what you chose. These are worth more than the easy 190. -->
-
 **1.**
-> *The post:*
+> *The post:* "This is cope. People from prestigious schools have a network of connections built-in to their school that can get them work based solely on that. Their 'intelligence' in abstract is more or less irrelevant. The only thing that really matters to employers is perceived competence… Actual competence is difficult to determine for people without long and well documented work histories…"
 >
-> *Could have been:*
+> *Could have been:* `argued` or `hot_take`.
 >
-> *I chose, because:*
+> *I chose, because:* `hot_take`. It's a long, careful-sounding mechanism, but every step (networks get people jobs, employers only see perceived competence) is asserted, not checkable. Under the decision rule, a reason that's only another claim doesn't count, however sensible it sounds.
 
 **2.**
-> *The post:*
+> *The post:* "This frankly sounds like a mental health issue not a CS issue… My kid recently graduated from a regular public university in flyover country and landed a competitive 6 figure job working with elite grads… My spouse and I both have CS degrees and have worked and hired in tech…"
 >
-> *Could have been:*
+> *Could have been:* `experience` or `argued`.
 >
-> *I chose, because:*
+> *I chose, because:* `argued`. There's a real outcome (a six-figure job), but it's the writer's kid's, not the writer's. `experience` is defined as what happened *to the writer*. The kid's outcome is something the writer saw happen, which is exactly what makes a reason count for `argued`.
 
 **3.**
-> *The post:*
+> *The post:* "I did 250 leetcode and can't find a gf :("
 >
-> *Could have been:*
+> *Could have been:* `chatter` or `experience`.
 >
-> *I chose, because:*
+> *I chose, because:* `chatter`. "250 leetcode" is a measured first-hand detail, so the letter of the `experience` definition fits. But it's a joke in a joke thread, not a report anyone could use. This one shows a gap in the definitions: nothing says what to do with a number used as a punchline.
 
 ---
 
@@ -210,19 +239,43 @@ of next unit's variance. -->
      workflow and disclosing it costs you nothing. Not disclosing it is the
      problem. -->
 
-**Moment 1**
+**DRAFT — review and rewrite in your own words before submitting.**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+**Moment 1: stress-testing the labels**
 
-**Moment 2**
+- *What I asked for:* eight comments written to sit on the boundaries of my
+  four draft labels, without being told which label Claude would pick.
+- *What came back:* eight r/csmajors-style comments (`notes/stress_test.md`).
+  I labelled all eight, and two of my answers contradicted my own written
+  definitions. I called a "had my powerday Monday, still nothing, anyone else?"
+  comment `chatter` though it named a company and a round, and I called a
+  comment with a stated mechanism `hot_take` though the definition said a
+  mechanism was enough for `argued`.
+- *What I changed:* I asked Claude to recommend fixes. It proposed the
+  `argued` vs `hot_take` decision rule (the reason has to be checkable), the
+  "waiting isn't an outcome" rule, and tighter `experience` and `chatter`
+  definitions, each checked against my stress-test answers. I adopted them as
+  written.
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+**Moment 2: the acceptance criteria**
 
-**Pre-labelling disclosure:**
+- *What I asked for:* recommended acceptance criteria, with reasons tied to
+  this dataset.
+- *What came back:* five criteria (accuracy ≥ 0.55; F1 ≥ 0.50 for the three
+  bigger labels; `argued` F1 ≥ 0.30; a 15-point confidence gap; ≥ 21/30
+  agreement with staff), with reasons based on a ~36-comment test split and
+  `argued` being the thinnest label. It also pointed out that a balance
+  criterion would be close to impossible to miss, since I control it while
+  labelling.
+- *What I changed:* nothing. I adopted all five as written, before any
+  training.
+
+**Pre-labelling disclosure:** Claude pre-labelled all 266 rows from my
+definitions and flagged 16 as hard cases. Claude also collected the comments
+(`collect.py` and the RSS fetch) and chose the 26 top-up rows from the pool.
+**At the time of this draft, none of the pre-labels has been checked and no row
+is labelled cold.** This section will be updated when I've labelled 20 cold and
+read and corrected every pre-label.
 
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
 

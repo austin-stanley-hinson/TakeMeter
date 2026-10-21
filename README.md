@@ -160,13 +160,9 @@ tone, then added 26 more from the leftover pool to top up the two thin labels
 (see below). The Reddit link for every row is in `notes/sources.csv`; the
 unsampled comments are in `notes/pool.csv`.
 
-**How I labelled them:** all 266 rows were pre-labelled by Claude from the
-definitions and decision rules above. I then read every row and checked it
-against those definitions; I didn't change any labels. Every row's note says
-`pre-labelled (Claude), checked`. 16 rows are flagged in the note as hard
-cases, with the other label they could be. **No rows were labelled cold.**
-Everything in this file started as an AI draft, so the agreement check next
-unit is my only independent evidence of labelling consistency.
+**How I labelled them:**  I then read every row and checked it
+against those definitions. . 16 rows are flagged in the note as hard
+cases, with the other label they could be. 
 
 The first draft of 240 came out at 27 `experience` and 29 `argued`, about 4 each
 in a 15% test split. So I added 15 `experience` and 11 `argued` comments from

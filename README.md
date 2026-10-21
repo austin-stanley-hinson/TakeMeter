@@ -216,17 +216,38 @@ scores about 0.38.
 
 <!-- Your starting model, your settings, and anything you changed and why. -->
 
-**Base model:**
+**Base model:** `distilbert-base-uncased`, the notebook default.
 
-**Settings:** <!-- epochs, learning rate, batch size, seed -->
+**Settings:** 3 epochs, learning rate 2e-5, batch size 16, 128 tokens per
+comment, seed 42.
 
-**Anything I changed from the defaults, and why:**
+**Trained on:** `mps` (Apple Silicon GPU), torch 2.14.1, as recorded in
+`results.json`. Training took about 30 seconds.
 
-**Split sizes:** <!-- train / val / test, and per-label counts in the test
-split. If a label had fewer than about 8 in test, say so — it explains a lot
-of next unit's variance. -->
+**Anything I changed from the defaults, and why:** nothing except `LABELS`
+(set to `experience`, `argued`, `hot_take`, `chatter`) and my name and email.
+128 tokens covers almost every comment: the median comment is 124 characters,
+and `collect.py` dropped anything over 1,500.
 
+One thing about *how* it ran rather than what it ran: the Jupyter kernel
+wouldn't start in my environment (it timed out on its local connection), so
+sections 1–5 were executed cell by cell in one Python process with the
+notebook's own code, and each cell's printed output was saved back into
+`takemeter.ipynb`. Sections 6 and 7 were not run.
 
+**Split sizes:** 186 train / 40 val / 40 test, stratified.
+
+| Label | Train | Val | Test |
+|---|---|---|---|
+| `experience` | 30 | 6 | 6 |
+| `argued` | 28 | 6 | 6 |
+| `hot_take` | 57 | 13 | 12 |
+| `chatter` | 71 | 15 | 16 |
+
+**`experience` and `argued` have only 6 examples each in the test split**,
+below the ~8 the notebook flags. One comment is worth about 17 points of recall
+for those two labels, so their F1 will move a lot between seeds next unit, and
+criteria 2 and 3 will be read with that in mind.
 
 ---
 

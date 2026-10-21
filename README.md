@@ -160,9 +160,10 @@ tone, then added 26 more from the leftover pool to top up the two thin labels
 (see below). The Reddit link for every row is in `notes/sources.csv`; the
 unsampled comments are in `notes/pool.csv`.
 
-**How I labelled them:**  I then read every row and checked it
-against those definitions. . 16 rows are flagged in the note as hard
-cases, with the other label they could be. 
+**How I labelled them:** every row was pre-labelled, then I read each one and
+checked it against the definitions above (see the disclosure in How I Used AI).
+16 rows are flagged in the note as hard cases, with the other label they could
+be.
 
 The first draft of 240 came out at 27 `experience` and 29 `argued`, about 4 each
 in a 15% test split. So I added 15 `experience` and 11 `argued` comments from

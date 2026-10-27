@@ -314,10 +314,21 @@ pool.
 
 | Measure | Baseline | Trained | Difference |
 |---|---|---|---|
-| Overall accuracy |  |  |  |
-| Macro F1 |  |  |  |
-| F1 — `label_one` |  |  |  |
-| F1 — `label_two` |  |  |  |
+| Overall accuracy | 0.300 | 0.525 | +0.225 |
+| Macro F1 | 0.289 | 0.302 | +0.013 |
+| F1 — `argued` | 0.500 | 0.000 | -0.500 |
+| F1 — `chatter` | 0.000 | 0.638 | +0.638 |
+| F1 — `experience` | 0.357 | 0.000 | -0.357 |
+| F1 — `hot_take` | 0.300 | 0.571 | +0.271 |
+
+Both columns are scored on the same 40 posts in `test_split.csv` (seed 42).
+The baseline is `facebook/bart-large-mnli`, zero-shot, prompted with the four
+definitions in `label_definitions.txt`. It took about 23 seconds for the 40
+posts on `mps`.
+
+**What my definitions were worth:** run again with bare label names only, the
+baseline scored 0.200 accuracy and 0.180 macro F1
+(`baseline_results_bare.json`). The definitions added 10 points of accuracy.
 
 **What I predicted before I looked:**
 <!-- Milestone 1 asks you to write this BEFORE seeing the trained numbers. A
@@ -336,6 +347,17 @@ my unit 5 `results.json`, which already showed 0.00 F1 for `experience` and
 **What the gap actually means:**
 <!-- If the baseline matched your trained model, your fine-tuning added
      nothing — and that is a real finding, not a failure. Say it plainly. -->
+
+The prediction held on every label. The 22-point accuracy gap mostly measures
+`chatter`: it's 16 of the 40 test posts, the trained model calls almost
+everything `chatter` (15 of 16 right, and 16 other posts pulled into it), and
+the baseline got none of them, calling 12 of the 16 `experience`. On macro F1,
+which weights the four labels equally, fine-tuning added only 0.013. The two
+models failed in opposite places. The trained model learned the two big labels
+and never predicted `experience` or `argued`. The baseline, reading only the
+definitions, found 5 of 6 `experience` and 4 of 6 `argued` posts but couldn't
+recognise `chatter` from its definition. So fine-tuning didn't make a better
+classifier overall. It traded the thin labels for the big ones.
 
 
 

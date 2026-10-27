@@ -387,7 +387,9 @@ classifier overall. It traded the thin labels for the big ones.
 | 2. F1 of `experience` / `hot_take` / `chatter` | each ≥ 0.50 | 0.000 / 0.571 / 0.638 | 0.000 / 0.522 / 0.667 | 0.000 / 0.133 / 0.604 | Miss |
 | 3. F1 of `argued` | ≥ 0.30 | 0.000 | 0.000 | 0.000 | Miss |
 | 4. Confidence gap (most-sure third − least-sure third) | ≥ 0.15 | 0.538 | 0.308 | 0.538 | Pass |
-| 5. Agreement with staff | ≥ 21/30 | | | | Milestone 3 |
+| 5. Agreement with staff | ≥ 21/30 | 30/30 | 30/30 | 30/30 | Pass |
+
+Criterion 5 doesn't depend on the seed: it's one labelling run against the staff set (`agreement_results.json`), repeated across the columns.
 
 All three seeds trained on `mps` (Apple Silicon GPU), torch 2.14.1, recorded in
 `results_three_seeds_before.json`. Seed 42 reproduced the unit 5 run exactly
@@ -480,49 +482,63 @@ and `argued` rows show the same pull: 10 of their 12 posts went to `chatter`.
      data/staff_taxonomy.md, not your own — so every argument below is made
      from those definitions and those decision rules. -->
 
-**Agreement rate:** ___ / 30 = ___%
+**Agreement rate:** 30 / 30 = 100%
 
 <!-- Nobody grades this number. A 60% who argues every disagreement from the
      stated rules beats a 95% who wrote "staff was right" nine times. Several
      of the 30 were chosen because they're genuinely ambiguous — you should be
      winning some of these. -->
 
+`python agreement.py` against `data/staff_labels.csv`, results in
+`agreement_results.json`. The labels in `my_staff_labels.csv` were pre-labelled
+by Claude under the staff taxonomy and checked by me row by row, with none
+changed (see How I Used AI). Both label sets come out 10 / 10 / 10.
+
 **Disagreements**
 
-<!-- Three lines each: the post, both labels, and who you think is right and
-     why — grounded in the staff definitions you were both applying.
+None. There is nothing to adjudicate, so instead here are the seven posts staff
+marked as hard (`borderline = yes`) and how each was decided under the staff
+rules. They're where a disagreement would have been.
 
-     Then sort each into one of three piles:
-       (a) the rule covered it and I applied it loosely → a consistency problem
-       (b) the rule genuinely doesn't say               → a gap in the definitions
-       (c) the rule is ambiguous here and my reading is defensible → argue it.
-           This is a legitimate win.
+| id | Post (short) | Both said | Rule that decided it | Flagged as a close call beforehand? |
+|---|---|---|---|---|
+| sp_005 | "Carbon plates aren't the whole story. My times dropped 2%… then another 2%… when the only thing that changed was 35 to 50 miles a week" | `analysis` | 1: the two comparable numbers are the reason, not decoration | Yes |
+| sp_010 | "Three of us ran the same session… within 10 seconds… smaller than the noise" | `analysis` | 1: thin, hedged, but checkable and load-bearing | Yes |
+| sp_014 | "Times are down about 3% since the shoe rules changed, so obviously the shoes are the whole story" | `hot_take` | 1: the 3% is decoration, the taxonomy's own example | Yes |
+| sp_019 | "Nobody actually enjoys the long run. They enjoy having done it…" | `hot_take` | 2: a general claim about everyone, not the writer's morning | **No** |
+| sp_020 | "Every injury thread on this forum is the same injury and the same three replies." | `hot_take` | 2: general claim; checkable in principle, but no count given | Yes |
+| sp_028 | "Third DNF this year. I don't really want to talk about it…" | `reaction` | 3: "third" is countable but nothing is argued from it | **No** |
+| sp_029 | "Just realised the shoes I set every PB in… are the ones I bought by accident in the wrong size." | `reaction` | 2: the writer's own realisation, no general claim | Yes |
 
-     Pile (a) is the one that matters most for your diagnosis: if you applied a
-     written rule two different ways on 30 posts, that is direct evidence about
-     what you did across your own 200. -->
-
-**1.**
-> *The post:*
->
-> *Staff said / I said:*
->
-> *My call, and why:*
->
-> *Which pile:*
-
-**2.**
-> *The post:*
->
-> *Staff said / I said:*
->
-> *My call, and why:*
->
-> *Which pile:*
+The pre-labels marked 13 close calls. They caught 5 of staff's 7 hard posts and
+missed sp_019 and sp_028, both read as easy and both still labelled the way
+staff did. The other 8 marked posts (sp_002, sp_007, sp_013, sp_016, sp_017,
+sp_018, sp_023, sp_027) staff didn't consider hard.
 
 **What the pattern in my disagreements tells me:**
 
+There's no pattern to read, which is itself the result, but it says less than
+100% sounds like. Three honest limits:
 
+- **The set is easier than my data.** These are fictional posts written to
+  illustrate three rules, and each one turns on a single feature: is there a
+  number, does it carry the argument, is it about the writer. Real r/csmajors
+  comments mix an outcome, a claim and a joke in one post.
+- **It measures the pre-labelling, not me labelling cold.** Claude applied the
+  staff rules and I confirmed them. Since `labels.csv` was made the same way,
+  that is the right process to test, but it isn't evidence that I'd reach the
+  same labels unaided.
+- **It tests one of my boundaries, not the one the model fails on.** Staff's
+  rule 1 (does the fact carry the argument?) is the same test as my
+  `argued` vs `hot_take` rule, and on that skill the labelling held up,
+  including on the three rule-1 hard cases. But my confusion matrix doesn't
+  mainly confuse `argued` with `hot_take`. It sends everything to `chatter`.
+
+So for the diagnosis: the agreement check gives no sign that my labels are
+inconsistent on the boundary I worried about most. That points the criterion 2
+and 3 misses away from a labelling problem and towards too few examples of
+`experience` and `argued` for this model to learn, with the caveat that this
+check can't see the `chatter` boundaries at all.
 
 ---
 

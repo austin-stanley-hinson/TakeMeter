@@ -230,7 +230,10 @@ One thing about *how* it ran rather than what it ran: the Jupyter kernel
 wouldn't start in my environment (it timed out on its local connection), so
 sections 1–5 were executed cell by cell in one Python process with the
 notebook's own code, and each cell's printed output was saved back into
-`takemeter.ipynb`. Sections 6 and 7 were not run.
+`takemeter.ipynb`. In unit 6, sections 6 and 7 were run the same way: section
+1 in full, the earlier sections only far enough to define the functions
+section 6 calls (so `results.json` and `test_split.csv` weren't rewritten),
+then sections 6 and 7 in full.
 
 **Split sizes:** 186 train / 40 val / 40 test, stratified.
 
@@ -370,28 +373,63 @@ classifier overall. It traded the thin labels for the big ones.
 
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Overall accuracy | ≥ 0.55 | 0.525 | 0.525 | 0.425 | Miss |
+| 2. F1 of `experience` / `hot_take` / `chatter` | each ≥ 0.50 | 0.000 / 0.571 / 0.638 | 0.000 / 0.522 / 0.667 | 0.000 / 0.133 / 0.604 | Miss |
+| 3. F1 of `argued` | ≥ 0.30 | 0.000 | 0.000 | 0.000 | Miss |
+| 4. Confidence gap (most-sure third − least-sure third) | ≥ 0.15 | 0.538 | 0.308 | 0.538 | Pass |
+| 5. Agreement with staff | ≥ 21/30 | | | | Milestone 3 |
+
+All three seeds trained on `mps` (Apple Silicon GPU), torch 2.14.1, recorded in
+`results_three_seeds_before.json`. Seed 42 reproduced the unit 5 run exactly
+(0.525 accuracy, 0.302 macro F1). Each seed took well under a minute.
+
+The notebook's spread table:
+
+| Measure | Seed 42 | Seed 7 | Seed 2024 | Spread |
+|---|---|---|---|---|
+| Overall accuracy | 0.525 | 0.525 | 0.425 | 0.100 |
+| Macro F1 | 0.302 | 0.297 | 0.184 | 0.118 |
+| F1 — `experience` | 0.000 | 0.000 | 0.000 | 0.000 |
+| F1 — `argued` | 0.000 | 0.000 | 0.000 | 0.000 |
+| F1 — `hot_take` | 0.571 | 0.522 | 0.133 | 0.438 |
+| F1 — `chatter` | 0.638 | 0.667 | 0.604 | 0.063 |
+
+**The spread:** accuracy moved 10 points (0.525 to 0.425), right at the line
+the notebook draws for "too small or too lopsided for a stable measure", and
+the notebook flagged it. One test post is 2.5 points here, so the drop is 4
+posts. Almost all of it is `hot_take`: seed 2024 found 1 of 12 where the other
+two seeds found 6, while `chatter` barely moved. The two zeros don't move at
+all, because no seed ever predicts `experience` or `argued`. That's a stable
+result, not a stable model: with 28–30 training examples each, those labels
+lose to always saying `chatter` (71 examples), which is the lopsidedness the
+note is pointing at.
 
 ### Confusion matrix
 
 <!-- ⚠️ TYPED AS A MARKDOWN TABLE. The notebook prints one ready to paste.
      An image of a matrix earns nothing. -->
 
-| true \ predicted |  |  |  |
-|---|---|---|---|
-| **** |  |  |  |
-| **** |  |  |  |
-| **** |  |  |  |
+Seed 42, the same 40 posts as `test_split.csv` and the Baseline vs. Trained
+table. Rows are true labels, columns are the model's guesses.
+
+| true \ predicted | experience | argued | hot_take | chatter |
+|---|---|---|---|---|
+| **experience** | 0 | 0 | 1 | 5 |
+| **argued** | 0 | 0 | 1 | 5 |
+| **hot_take** | 0 | 0 | 6 | 6 |
+| **chatter** | 0 | 0 | 1 | 15 |
 
 **My biggest off-diagonal number, and what it means:**
 <!-- Not "the model made mistakes" — WHICH boundary it didn't learn, and which
      direction. "7 real analysis posts were called hot_take and only 3 went the
      other way" is a direction, not just an error rate. -->
 
+6 real `hot_take` posts were called `chatter` and only 1 `chatter` post went
+the other way, so the model hasn't learned the `hot_take`/`chatter` boundary
+and falls back on `chatter` whenever a short opinion doesn't look strongly
+opinionated. It's the same direction on every seed (6, 6 and 11 `hot_take`
+posts called `chatter`, against 1, 1 and 0 the other way), and the `experience`
+and `argued` rows show the same pull: 10 of their 12 posts went to `chatter`.
 
 
 ---

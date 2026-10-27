@@ -1,0 +1,240 @@
+{
+  "model": "facebook/bart-large-mnli",
+  "n": 40,
+  "seed": 42,
+  "held_out": true,
+  "used_definitions": false,
+  "scores": {
+    "n": 40,
+    "accuracy": 0.2,
+    "f1_macro": 0.18031266560678325,
+    "per_label": {
+      "argued": {
+        "precision": 0.16129032258064516,
+        "recall": 0.8333333333333334,
+        "f1": 0.27027027027027023,
+        "support": 6
+      },
+      "chatter": {
+        "precision": 1.0,
+        "recall": 0.0625,
+        "f1": 0.11764705882352941,
+        "support": 16
+      },
+      "experience": {
+        "precision": 0.3333333333333333,
+        "recall": 0.3333333333333333,
+        "f1": 0.3333333333333333,
+        "support": 6
+      },
+      "hot_take": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 12
+      }
+    }
+  },
+  "predictions": [
+    {
+      "text": "Yea. Hard not to dwell on it but it will all work out in the end",
+      "gold": "chatter",
+      "predicted": "experience"
+    },
+    {
+      "text": "Yeah I am unsure, I am aware that the 7th a lot of interviews took place",
+      "gold": "chatter",
+      "predicted": "argued"
+    },
+    {
+      "text": "Same. I agree\n Im studying comp sci + math at UBC (you\u2019ve probably never heard of it) and all of my friends who have graduated have 90k+ salaries working in software/finance/data engineering (although we were all in coop)\n Theres nothing wrong with cs as a degree. The problem is people have lagging expectations from 2019 of what you need to land a job in 2026",
+      "gold": "argued",
+      "predicted": "argued"
+    },
+    {
+      "text": "i\u2019m ngl u can\u2019t do anything abt that js put out the apps and take what u get",
+      "gold": "hot_take",
+      "predicted": "argued"
+    },
+    {
+      "text": "I\u2019d be in the same position if I got kicked out. Please don\u2019t give up",
+      "gold": "chatter",
+      "predicted": "argued"
+    },
+    {
+      "text": "This is actually a characteristic of a extreme capitalistic country.",
+      "gold": "hot_take",
+      "predicted": "argued"
+    },
+    {
+      "text": "It's a moral imperative! -- Real Genius (year 1985)",
+      "gold": "chatter",
+      "predicted": "argued"
+    },
+    {
+      "text": "Sometimes people forget that this is job and the developer is not a founder.",
+      "gold": "hot_take",
+      "predicted": "argued"
+    },
+    {
+      "text": "truly an excellent find lol, some of my other favorite moments:\n \"We are not one of those company that give out equity like its effing candy, come in, work for us, and then we will give you equity\"\n \"We do give out competitive salaries now, before we didn't...\" \n \"$20,000 worth of training, we will train you ourselves\" (Implying their training is worth 20k, the same price they were pressuring their online students into taking loans to cover and got sued for lol)",
+      "gold": "chatter",
+      "predicted": "argued"
+    },
+    {
+      "text": "they just want slaves and are gaslighting you to believe that \"you're gonna become a part of a family\"",
+      "gold": "hot_take",
+      "predicted": "argued"
+    },
+    {
+      "text": "People are afraid to value their time. I\u2019m not going to lick the dirt off of someone\u2019s boot to have a job, let alone one that barely pays my mortgage.",
+      "gold": "hot_take",
+      "predicted": "argued"
+    },
+    {
+      "text": "Hell yeah brother, glad to hear it. Hit that pb!",
+      "gold": "chatter",
+      "predicted": "experience"
+    },
+    {
+      "text": "I LOST THE GAME FUCK WHY DID YOU DO THAT!",
+      "gold": "chatter",
+      "predicted": "argued"
+    },
+    {
+      "text": "Nice Hopefully u get the offer. I\u2019m hoping for Chandler \ud83d\ude4f\ud83c\udffc",
+      "gold": "chatter",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "resume deep dive / live coding but i got ibm specific questions",
+      "gold": "experience",
+      "predicted": "experience"
+    },
+    {
+      "text": "We are both international students in Canada, working towards a permanent residence and then I plan to marry her.",
+      "gold": "chatter",
+      "predicted": "argued"
+    },
+    {
+      "text": "Congrats OP. Here's hoping in a few months she brings you on for full time.",
+      "gold": "chatter",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Imagine expecting a neurosurgeon to be able to explain how to perform all other types of surgery almost perfectly or having them perform surgery for an interview. Doesn\u2019t happen because they trust that they have the experience. For some reason, our field does not trust its candidates, which makes us all suffer",
+      "gold": "hot_take",
+      "predicted": "argued"
+    },
+    {
+      "text": "Probably not. I had recruiters emailing me about \u201cattractive\u201d offers with $39/hr in Omaha lol",
+      "gold": "experience",
+      "predicted": "argued"
+    },
+    {
+      "text": "I would argue that having these 3 things and being even okay at programming/technical stuff will give you a better chance of succeeding than missing 1 of these and being an amazing programmer",
+      "gold": "hot_take",
+      "predicted": "argued"
+    },
+    {
+      "text": "Remember the effective pay is going to be much less than the McD's job in terms of dollars per hour because I'm sure that firm would work people to the bone for their $40k. That may make it harder for OP to pivot since they would have little time to interview or do interview prep.",
+      "gold": "hot_take",
+      "predicted": "argued"
+    },
+    {
+      "text": "\"Embrace the latest tech where the experience gap isn't that big yet\" and \"go to some relevant events so you meet people\" are solid steps if you want to enter the industry.\n You probably also got lucky but your approach is solid.",
+      "gold": "hot_take",
+      "predicted": "experience"
+    },
+    {
+      "text": "Comments on looking tired, but also messages staff at 2am wtf?",
+      "gold": "chatter",
+      "predicted": "chatter"
+    },
+    {
+      "text": "Its a troll post bot \"ApartmentAlert2304 likes to keep their posts hidden\"",
+      "gold": "chatter",
+      "predicted": "argued"
+    },
+    {
+      "text": "I also was required 2 addtional VO for full time conversion. But I think I passed it. My HR told me that they are currently exploring options for a direct team match",
+      "gold": "experience",
+      "predicted": "argued"
+    },
+    {
+      "text": "There are about 400 at Yale, 1000 at Stanford, and 4000 at Berkeley",
+      "gold": "argued",
+      "predicted": "argued"
+    },
+    {
+      "text": "I go to UCLA a good amount of the CS majors here are on EBT\n I'm a senior UCLA CS major and you would be lying to yourself if you think the vast majority of CS majors don't come from privileged backgrounds. It's literally just a bunch of closed-off cliquey Asian dudes.",
+      "gold": "argued",
+      "predicted": "argued"
+    },
+    {
+      "text": "It shouldn\u2019t be but it is for most sadly because it\u2019s time and work (sorry for delete responded to the wrong comment)",
+      "gold": "chatter",
+      "predicted": "argued"
+    },
+    {
+      "text": "You didnt get an internship but atleast you can spend all your savings and get dumped, cool",
+      "gold": "chatter",
+      "predicted": "argued"
+    },
+    {
+      "text": "You work for them \ud83d\ude22 . Trying to make it so commenter takes down post. If u r stupid enough to sign up for their vibe coded product u can make yourself with 20 dollar gpt plan no helping you. Also supporting this type of company that clearly exploits workers is not something I would want to do",
+      "gold": "hot_take",
+      "predicted": "argued"
+    },
+    {
+      "text": "And what about us who are low iq to even lie. Or even mental retardaion.",
+      "gold": "chatter",
+      "predicted": "argued"
+    },
+    {
+      "text": "Happened with me, I was a previous Google intern but my hosts set me up for failure and faced racism too. I'm very sorry to hear your bad situation too.",
+      "gold": "experience",
+      "predicted": "experience"
+    },
+    {
+      "text": "While it is true that the job market was better a decade ago, the aesthetic being sold here is a fabricaution.\n Yes, you were paid well. Yes, you were given goody bags and got to go into a high rise glass monolith. \n But no, you were never an erudite, sweater-wearing, genius happily coding away on a beanbag share surrounded by lattes and attractive people. You were an overworked instrument of a corporation leveraged for a profit that could be dug out of your skull through your fingers by means of typing computer code. And, when the bill came due, that instrument was excised with as much thought as eliminating a malignant growth.\n As the saying goes: the chains are golden handcuffs, but chains nonetheless.",
+      "gold": "hot_take",
+      "predicted": "argued"
+    },
+    {
+      "text": "Wasted 2 days on a take home, because I really really wanted to join the company. i am a senior dev and I answered everything perfectly, fhe vibes were great etc. \n Got hit with the: \"We are gonna proceed with another candidate\"\n F*ck them",
+      "gold": "experience",
+      "predicted": "argued"
+    },
+    {
+      "text": "Holy larp bruh. Google\u2019s L3 was only 4 rounds imcluding behavioural. How on earth are internships 7?\nAnd what does Leetcode have to do with ECE? Do you realise how worthless CS os if every engineering major can also so Leetcode?",
+      "gold": "argued",
+      "predicted": "argued"
+    },
+    {
+      "text": "Or they weren\u2019t a good fit for the opening that was available.",
+      "gold": "hot_take",
+      "predicted": "argued"
+    },
+    {
+      "text": "If you're in the US, $40k is barely even solo-apartment money in a lot of MCOL cities. I was making that in 2021 (diff field) and it was like rent, bills, and a tiny amount left over with 0 savings. \n Get the role and ghost atp",
+      "gold": "experience",
+      "predicted": "argued"
+    },
+    {
+      "text": "Yeah, I was joking. Also, while re-reading my comment, I realized my prose was actual ass. No wonder I didn't get into Harvard (or MIT for that matter; plus Stanford, UCB, CMU, etc.).",
+      "gold": "chatter",
+      "predicted": "argued"
+    },
+    {
+      "text": "Don't have a full time job yet, but I do a lot of contracts for AI companies. I never know who the client is until I've accepted the offer.\n I always pray it's not Meta. They tend to be highly disorganized, non-communicative, and have unreasonable expectations that will randomly change mid-contract, if not mid-task.\n My partner reports similar experiences with the company. Fuck Meta.",
+      "gold": "argued",
+      "predicted": "experience"
+    },
+    {
+      "text": "Your numbers seem outdated, even 3 years ago they seem out of date? https://www.reddit.com/r/berkeley/s/yqKmQAVtDW",
+      "gold": "argued",
+      "predicted": "argued"
+    }
+  ]
+}

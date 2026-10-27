@@ -286,6 +286,14 @@ criteria 2 and 3 will be read with that in mind.
 - *What I changed:* nothing. I adopted all five as written, before any
   training.
 
+**Moment 3: the baseline prediction (unit 6)**
+
+- *What I asked for:* a one-sentence prediction of where the trained model
+  would beat the zero-shot baseline and where it wouldn't.
+- *What came back:* the prediction under Baseline vs. Trained, reasoned from
+  the per-label training counts and the unit 5 zeros.
+- *What I changed:* nothing. I used it as written.
+
 **Pre-labelling disclosure:** Claude pre-labelled all 266 rows from my
 definitions and flagged 16 as hard cases. I read and checked every row and kept
 all of Claude's labels. No rows were labelled cold. Claude also collected the
@@ -314,6 +322,16 @@ pool.
 **What I predicted before I looked:**
 <!-- Milestone 1 asks you to write this BEFORE seeing the trained numbers. A
      prediction made afterwards isn't one. -->
+
+My trained model will beat the baseline overall and on `chatter` and
+`hot_take`, the two labels it had 57–71 training examples of. It will lose to
+the baseline on `argued` and `experience`, the two thin labels (28–30 examples
+each), where reading the definitions does better than a model that never
+learned to predict them.
+
+Not a blind prediction: I wrote it after seeing the baseline's own numbers and
+my unit 5 `results.json`, which already showed 0.00 F1 for `experience` and
+`argued`. It was committed before the comparison table was generated.
 
 **What the gap actually means:**
 <!-- If the baseline matched your trained model, your fine-tuning added

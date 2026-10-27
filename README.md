@@ -289,13 +289,21 @@ criteria 2 and 3 will be read with that in mind.
 - *What I changed:* nothing. I adopted all five as written, before any
   training.
 
-**Moment 3: the baseline prediction (unit 6)**
+**Moment 3: running the unit 6 tests and drafting the write-up**
 
-- *What I asked for:* a one-sentence prediction of where the trained model
-  would beat the zero-shot baseline and where it wouldn't.
+- *What I asked for:* to run the baseline, the three seeds, the confusion
+  matrix and the agreement check, and to draft the README text for each: a
+  one-sentence prediction of where the trained model would beat the zero-shot
+  baseline, then what the results meant.
 - *What came back:* the prediction under Baseline vs. Trained, reasoned from
-  the per-label training counts and the unit 5 zeros.
-- *What I changed:* nothing. I used it as written.
+  the per-label training counts and the unit 5 zeros, then committed before
+  the comparison table was generated. After the runs: the "What the gap
+  actually means" paragraph, the Run Log — Before table with the spread
+  paragraph and the biggest off-diagonal sentence, and the Agreement Report
+  (the table of staff's seven hard posts and the three limits on what a 100%
+  rate means). Every number in them comes from the committed result files.
+- *What I changed:* nothing in the wording. I checked each against the result
+  files and used them as written.
 
 **Pre-labelling disclosure:** Claude pre-labelled all 266 rows from my
 definitions and flagged 16 as hard cases. I read and checked every row and kept

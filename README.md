@@ -301,7 +301,8 @@ criteria 2 and 3 will be read with that in mind.
   actually means" paragraph, the Run Log — Before table with the spread
   paragraph and the biggest off-diagonal sentence, and the Agreement Report
   (the table of staff's seven hard posts and the three limits on what a 100%
-  rate means). Every number in them comes from the committed result files.
+  rate means), then the Verdicts and Diagnoses, which use the matrix, the
+  agreement report, the baseline and the notebook's training log. Every number in them comes from the committed result files.
 - *What I changed:* nothing in the wording. I checked each against the result
   files and used them as written.
 
@@ -391,11 +392,11 @@ classifier overall. It traded the thin labels for the big ones.
 
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1. Overall accuracy | ≥ 0.55 | 0.525 | 0.525 | 0.425 | Miss |
-| 2. F1 of `experience` / `hot_take` / `chatter` | each ≥ 0.50 | 0.000 / 0.571 / 0.638 | 0.000 / 0.522 / 0.667 | 0.000 / 0.133 / 0.604 | Miss |
-| 3. F1 of `argued` | ≥ 0.30 | 0.000 | 0.000 | 0.000 | Miss |
-| 4. Confidence gap (most-sure third − least-sure third) | ≥ 0.15 | 0.538 | 0.308 | 0.538 | Pass |
-| 5. Agreement with staff | ≥ 21/30 | 30/30 | 30/30 | 30/30 | Pass |
+| 1. Overall accuracy | ≥ 0.55 | 0.525 | 0.525 | 0.425 | MISSED |
+| 2. F1 of `experience` / `hot_take` / `chatter` | each ≥ 0.50 | 0.000 / 0.571 / 0.638 | 0.000 / 0.522 / 0.667 | 0.000 / 0.133 / 0.604 | MISSED |
+| 3. F1 of `argued` | ≥ 0.30 | 0.000 | 0.000 | 0.000 | MISSED |
+| 4. Confidence gap (most-sure third − least-sure third) | ≥ 0.15 | 0.538 | 0.308 | 0.538 | MET |
+| 5. Agreement with staff | ≥ 21/30 | 30/30 | 30/30 | 30/30 | MET |
 
 Criterion 5 doesn't depend on the seed: it's one labelling run against the staff set (`agreement_results.json`), repeated across the columns.
 
@@ -461,11 +462,14 @@ and `argued` rows show the same pull: 10 of their 12 posts went to `chatter`.
 
 | # | Criterion | Target | Verdict | How I decided |
 |---|---|---|---|---|
-| 1 |  |  |  |  |
-| 2 |  |  |  |  |
-| 3 |  |  |  |  |
-| 4 |  |  |  |  |
-| 5 |  |  |  |  |
+| 1 | Overall accuracy | ≥ 0.55 on all three seeds | MISSED | 0.525, 0.525, 0.425. Below on every seed, not just the bad one. |
+| 2 | F1 of `experience`, `hot_take`, `chatter` | each ≥ 0.50 on all three seeds | MISSED | `chatter` held (0.638, 0.667, 0.604). `hot_take` held on two seeds and fell to 0.133 on seed 2024. `experience` was 0.000 on all three. One label on one seed is enough to miss. |
+| 3 | F1 of `argued` | ≥ 0.30 on all three seeds | MISSED | 0.000 on all three. No seed predicted `argued` even once. This is exactly the failure the target was written to catch. |
+| 4 | Confidence gap, most-sure third − least-sure third | ≥ 0.15 on all three seeds | MET | 0.538, 0.308, 0.538. The smallest is still double the target. |
+| 5 | Agreement with staff | ≥ 21/30 | MET | 30/30 (`agreement_results.json`). One measurement, not per seed. |
+
+No criterion is revised. All five gave a number I could check against its
+target, so none of them is broken. The three misses are misses.
 
 **Diagnoses**
 
@@ -477,6 +481,62 @@ and `argued` rows show the same pull: 10 of their 12 posts went to `chatter`.
      ⚠️ Use your agreement report as evidence. It is the only instrument you
      have that can tell a LABELLING problem from a MODEL problem, and this
      section is graded on whether you used it that way. -->
+
+**Criteria 2 and 3: `experience` and `argued`, 0.000 F1 on every seed.**
+The cause is too few examples for the training run I gave it, not my labelling.
+
+- *The matrix:* across three seeds and 120 test predictions, the model never
+  once said `experience` or `argued`. Their posts don't go to a neighbouring
+  label. They go to the biggest one: 10 of the 12 on seed 42 were called
+  `chatter`. A model that had learned the wrong boundary would swap
+  `argued` with `hot_take`. Only 1, 3 and 2 `argued` posts went that way.
+- *The agreement report:* 30/30 against staff, including all three rule-1 hard
+  cases (sp_005, sp_010, sp_014). Rule 1 is the same test as my `argued` vs
+  `hot_take` rule: does the reason carry the claim? So there's no sign the
+  boundary was applied two different ways. If the labels were inconsistent
+  there, I'd expect disagreements on exactly those posts, and there were none.
+- *The baseline:* reading only my definitions, the zero-shot model found 5 of
+  6 `experience` and 4 of 6 `argued` posts. The difference is in the text and
+  the definitions describe it, so the task isn't out of reach.
+- *The training log:* training loss went from 1.35 to 1.22. Guessing evenly
+  across four labels scores ln 4 ≈ 1.39, so the model ended close to where a
+  blank guess starts. Validation loss was still falling at epoch 3. Its top
+  probability averages 0.35–0.40 against 0.25 for an even guess. 186 training
+  posts at batch size 16 for 3 epochs is 36 updates. That was enough to learn
+  that `chatter` is the most common label (71 training examples against 28–30
+  for these two) and not much more.
+
+So the model is under-trained on the thin labels and falls back on the prior:
+it predicted `chatter` for 31, 29 and 37 of the 40 test posts. The one thing
+I can't rule out is that more training still wouldn't be enough with 28–30
+examples each. That's the next test.
+
+**Criterion 2: `hot_take`, 0.133 on seed 2024.** Same cause, plus a hard pair.
+On seeds 42 and 7 the model found 6 of 12. On seed 2024 it found 1, and the
+other 11 went to `chatter`. It predicted `hot_take` only 3 times on that seed.
+`hot_take` vs `chatter` is the biggest off-diagonal on every seed (6, 6, 11
+against 1, 1, 0 the other way). The agreement check speaks to it only partly:
+staff's rule 2 (`reaction` vs `hot_take`, about the writer or a general
+claim?) is close to my venting-`chatter` vs `hot_take` line, and the three rule-2
+hard cases (sp_019, sp_020, sp_029) matched. So I read this as the model, not the
+labels. A short, confident opinion and a vent look alike to a model this close
+to its starting point, and which side wins depends on which 12 posts land in
+the test split.
+
+**Criterion 1: accuracy 0.525, 0.525, 0.425.** A consequence of the two
+above, plus a test set too small to measure precisely. A model that says
+`chatter` for most posts scores about the `chatter` share of the test set,
+16 of 40 = 0.40. These seeds beat that by 5, 5 and 1 posts. One post is 2.5
+points, so the 10-point swing is 4 posts. That is the "too small or too
+lopsided" warning the notebook printed, and it means a single-seed accuracy
+here is not a measurement.
+
+**What the two METs don't mean.** Criterion 4 passes, but on a model whose
+confidence is barely above an even guess: it ranks its posts well (its
+most-sure third is 69–77% accurate) without being sure of anything. Criterion
+5 passes on an easier, fictional set, labelled by the same Claude-then-me
+process as `labels.csv` (see the Agreement Report). Neither is evidence the
+classifier works.
 
 
 
@@ -546,7 +606,10 @@ So for the diagnosis: the agreement check gives no sign that my labels are
 inconsistent on the boundary I worried about most. That points the criterion 2
 and 3 misses away from a labelling problem and towards too few examples of
 `experience` and `argued` for this model to learn, with the caveat that this
-check can't see the `chatter` boundaries at all.
+check sees the `chatter` boundaries only partly: staff's `reaction` vs
+`hot_take` rule (about the writer, or a general claim?) is close to my
+venting-`chatter` vs `hot_take` line, and the three rule-2 hard cases matched,
+but nothing in the staff set resembles my questions and check-ins.
 
 ---
 

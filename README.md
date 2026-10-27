@@ -303,6 +303,16 @@ all of Claude's labels. No rows were labelled cold. Claude also collected the
 comments (`collect.py` and the RSS fetch) and chose the 26 top-up rows from the
 pool.
 
+**Staff set pre-labelling disclosure (unit 6):** Claude also pre-labelled the
+30 staff posts in `my_staff_labels.csv`, under `data/staff_taxonomy.md` rather
+than my own taxonomy, before I had seen `data/staff_labels.csv`. Its reason for
+each label, citing the staff rule, is in `notes/staff_prelabels.md`, with 13
+close calls marked. I read and checked every row against the staff definitions
+and rules and changed none. The pre-labels were committed before my check
+(`ee90a5b`). This matters for the agreement report: the rate measures Claude's
+reading of the staff rules, confirmed by me, not labels I made cold. The
+`labels.csv` it is evidence about were made the same way.
+
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
 
      Don't fill these in during unit 5.

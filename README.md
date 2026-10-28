@@ -782,6 +782,10 @@ confident claim reads as `hot_take`. Whether the support is checkable, the
 thing the label exists for, is what it never picked up from 28 examples, and
 it's what the zero-shot model reading my definition got 4 of 6 right on.
 
+---
+
+**Time spent:** 8 hours.
+
 
 
 <!-- ═════════════════════════════════════════════════════════════════════

@@ -693,9 +693,8 @@ under 0.30 on seed 2024. The model now predicts `argued` only 1, 3 and 1 times
 in 40 posts. Training longer changed *where* its posts go, and that's the more
 interesting result. Before, `argued` posts went to `chatter` (the prior).
 Now they're spread across `experience`, `hot_take` and `chatter`, with more
-going to `hot_take` than anywhere else (5, 1 and 5 posts across the three seeds
-went to `hot_take` or `experience` on 42, 7 and 2024 respectively, against 2, 2
-and 0 to `chatter`). On seed 2024, 5 of 6
+going to `hot_take` than anywhere else: 8 of the 18 `argued` posts across the
+three seeds, against 3 to `experience` and 4 to `chatter`. On seed 2024, 5 of 6
 went to `hot_take`, the exact boundary my decision rule was written for. The
 model is now failing on the boundary rather than ignoring the label, which
 looks like a genuinely hard pair at 28 training examples rather than

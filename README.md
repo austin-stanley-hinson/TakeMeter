@@ -304,7 +304,26 @@ criteria 2 and 3 will be read with that in mind.
   rate means), then the Verdicts and Diagnoses, which use the matrix, the
   agreement report, the baseline and the notebook's training log. In the
   improvement, Claude proposed the change (`EPOCHS` 3 → 10), ran the retrain
-  and drafted The Improvement section. Every number in them comes from the committed result files.
+  and drafted The Improvement section, and then What's Still Broken and the
+  gap sentences.
+
+**Moment 4: spotting the patterns in the errors (unit 6)**
+
+- *What I asked for:* the diagnosis for each miss, using the agreement report
+  to tell labelling from model problems.
+- *What came back:* two patterns I hadn't seen. The first was in the
+  notebook's training log: loss ended at 1.22 against the 1.39 of an even
+  four-way guess, with validation loss still falling. That turned "too few
+  examples" into "under-trained", which is why the improvement was a training
+  setting rather than relabelling. The second came after the retrain: the
+  `argued` errors moved from `chatter` to `hot_take` and `experience`, so the
+  remaining miss is a hard boundary rather than an ignored label. Claude also
+  caught and corrected two of its own mistakes along the way: an overstatement
+  in the Agreement Report (that the staff set couldn't test the `chatter`
+  boundary at all) and a miscount of where the `argued` posts went.
+- *What I changed:* I checked each pattern against the result files and kept
+  both. The choice of 10 epochs, and the commit of that change before the
+  retrain, were agreed before any after numbers existed. Every number in them comes from the committed result files.
 - *What I changed:* nothing in the wording. I checked each against the result
   files and used them as written.
 
@@ -716,11 +735,52 @@ under-training.
 
 <!-- For each criterion still missed: what you'd do, and why you stopped. -->
 
+**Criterion 3, `argued` F1 ≥ 0.30: still MISSED** (0.000, 0.444, 0.286 after
+the improvement).
+
+- *What I'd do:* add about 30 more `argued` comments, the brief's "add examples
+  to your thinnest label", labelled under the same decision rule, and retrain at
+  10 epochs on the same three seeds. The diagnosis now points there. The model
+  predicts `argued` only 1–3 times in 40 posts, and 8 of the 18 `argued` test
+  posts went to `hot_take`. That's a boundary learned from 28 training
+  examples, and the agreement check (30/30, including staff's three rule-1 hard
+  cases) gives no reason to think relabelling would help. The material exists:
+  `notes/pool.csv` still has 466 unlabelled comments, and at the 12–15%
+  `argued` rate of the first sample, that's roughly 55–70 candidates. I'd also
+  want 6+ more `argued` posts in each test split. At 6, one post is 17 points
+  of recall, which is why seed 42 can read 0.000 and seed 7 0.444 from the same
+  model.
+- *Why I stopped:* the brief allows one improvement in this unit and says
+  labels stay where they were. Adding rows to `labels.csv` would be a second
+  change, and its numbers couldn't be told apart from the epochs change.
+
+**Not a criterion, but broken: the measurement itself.** Accuracy spread is
+12.5 points after the improvement, over the notebook's 10-point line. With 40
+test posts, five posts separate the best seed from the worst, so a single seed
+can't settle any of these verdicts. Criterion 2 is MET with `experience` at
+exactly 0.500 on seed 42: one post the other way and it's a miss. More data is
+the fix here too. A larger test split would steady every number in both run
+logs. More epochs isn't, because seed 42 is already at 0.48 training loss
+against 0.98 validation loss.
+
+**What the two METs still don't promise:** criterion 4 passes on all seeds, but
+the gap fell on seed 42 (0.538 → 0.462) as confidence rose. Criterion 5 is
+30/30 on a fictional set that's easier than r/csmajors, labelled by the same
+Claude-then-me process as `labels.csv`.
+
 
 
 **The gap between what I meant my labels to capture and what the model
 learned:**
 <!-- Two sentences. Your confusion matrix is the evidence. -->
+
+I meant `argued` vs `hot_take` to turn on whether the reason given is something
+a reader could check, but the after matrix sends `argued` posts to `hot_take`
+(2) and `experience` (2) with 0 right, so the model learned the surface of my
+labels instead: first-person detail and numbers read as `experience`, a
+confident claim reads as `hot_take`. Whether the support is checkable, the
+thing the label exists for, is what it never picked up from 28 examples, and
+it's what the zero-shot model reading my definition got 4 of 6 right on.
 
 
 
@@ -741,19 +801,19 @@ learned:**
 
      SUBMISSION CHECKLIST — unit 6
 
-       [ ] Baseline vs. Trained table, with your prediction written beforehand
-       [ ] Run Log — Before, five criteria across three seeds
-       [ ] Confusion matrix TYPED AS A MARKDOWN TABLE
-       [ ] A verdict on every criterion
-       [ ] A diagnosis for every miss, using the agreement report as evidence
-       [ ] Agreement Report with every disagreement adjudicated
-       [ ] One improvement, with Run Log — After
-       [ ] What's Still Broken
-       [ ] results_three_seeds_before.json, results_three_seeds_after.json,
+       [x] Baseline vs. Trained table, with your prediction written beforehand
+       [x] Run Log — Before, five criteria across three seeds
+       [x] Confusion matrix TYPED AS A MARKDOWN TABLE
+       [x] A verdict on every criterion
+       [x] A diagnosis for every miss, using the agreement report as evidence
+       [x] Agreement Report with every disagreement adjudicated
+       [x] One improvement, with Run Log — After
+       [x] What's Still Broken
+       [x] results_three_seeds_before.json, results_three_seeds_after.json,
            baseline_results.json and
            agreement_results.json committed
-       [ ] At least four new commits
-       [ ] The SAME repository URL as last unit
+       [x] At least four new commits
+       [x] The SAME repository URL as last unit
 
      Do not delete and recreate this repository.
      ═════════════════════════════════════════════════════════════════════ -->

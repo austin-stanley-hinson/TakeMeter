@@ -302,7 +302,9 @@ criteria 2 and 3 will be read with that in mind.
   paragraph and the biggest off-diagonal sentence, and the Agreement Report
   (the table of staff's seven hard posts and the three limits on what a 100%
   rate means), then the Verdicts and Diagnoses, which use the matrix, the
-  agreement report, the baseline and the notebook's training log. Every number in them comes from the committed result files.
+  agreement report, the baseline and the notebook's training log. In the
+  improvement, Claude proposed the change (`EPOCHS` 3 → 10), ran the retrain
+  and drafted The Improvement section. Every number in them comes from the committed result files.
 - *What I changed:* nothing in the wording. I checked each against the result
   files and used them as written.
 
@@ -615,26 +617,99 @@ but nothing in the staff set resembles my questions and check-ins.
 
 ## The Improvement
 
-**What I changed:**
+**What I changed:** one training setting, `EPOCHS` from 3 to 10, in section 2
+of the notebook. Nothing else: same `labels.csv`, same labels and definitions,
+same criteria, same seeds (42, 7, 2024), learning rate 2e-5, batch size 16,
+128 tokens, same `mps` device. The change was committed (`1cece09`) before the
+retrain ran, with `RUN_LABEL = "after"`, so the before numbers in
+`results_three_seeds_before.json` weren't overwritten. Each seed took about 90
+seconds instead of 30.
 
-**Which diagnosis pointed at it:**
+**Which diagnosis pointed at it:** the criteria 2 and 3 diagnosis. Training
+loss ended at 1.22, close to the 1.39 of an even four-way guess. Validation
+loss was still falling at epoch 3, and the model never predicted `experience`
+or `argued`. The agreement check (30/30) gave no sign the labels were
+inconsistent, so relabelling a boundary had no evidence behind it. Adding 30
+more examples was the other option. I chose training first because it tests
+the one thing the diagnosis couldn't rule out: whether the model had stopped
+before learning, or couldn't learn the thin labels from this data at all.
 
 ### Run Log — After
 
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Overall accuracy | ≥ 0.55 | 0.675 | 0.725 | 0.600 | MET |
+| 2. F1 of `experience` / `hot_take` / `chatter` | each ≥ 0.50 | 0.500 / 0.800 / 0.778 | 0.727 / 0.769 / 0.765 | 0.571 / 0.593 / 0.688 | MET |
+| 3. F1 of `argued` | ≥ 0.30 | 0.000 | 0.444 | 0.286 | MISSED |
+| 4. Confidence gap (most-sure third − least-sure third) | ≥ 0.15 | 0.462 | 0.308 | 0.385 | MET |
+| 5. Agreement with staff | ≥ 21/30 | 30/30 | 30/30 | 30/30 | MET |
+
+Criterion 5 is unchanged: the improvement didn't touch the labels.
+`experience` on seed 42 is exactly 0.500, so criterion 2 is met at the line,
+not with room to spare.
+
+**Before and after, side by side:**
+
+| Measure | Before (3 epochs) 42 / 7 / 2024 | After (10 epochs) 42 / 7 / 2024 |
+|---|---|---|
+| Overall accuracy | 0.525 / 0.525 / 0.425 | 0.675 / 0.725 / 0.600 |
+| Macro F1 | 0.302 / 0.297 / 0.184 | 0.519 / 0.676 / 0.534 |
+| F1 — `experience` | 0.000 / 0.000 / 0.000 | 0.500 / 0.727 / 0.571 |
+| F1 — `argued` | 0.000 / 0.000 / 0.000 | 0.000 / 0.444 / 0.286 |
+| F1 — `hot_take` | 0.571 / 0.522 / 0.133 | 0.800 / 0.769 / 0.593 |
+| F1 — `chatter` | 0.638 / 0.667 / 0.604 | 0.778 / 0.765 / 0.688 |
+| Posts predicted `chatter` (of 40) | 31 / 29 / 37 | 20 / 18 / 16 |
+| Accuracy spread | 0.100 | 0.125 |
+
+Seed 42 after, on the same 40 posts as the baseline (`test_split.csv`):
+
+| true \ predicted | experience | argued | hot_take | chatter |
+|---|---|---|---|---|
+| **experience** | 3 | 0 | 0 | 3 |
+| **argued** | 2 | 0 | 2 | 2 |
+| **hot_take** | 0 | 1 | 10 | 1 |
+| **chatter** | 1 | 0 | 1 | 14 |
 
 **Did it help, and how do I know:**
 
-<!-- If it didn't, say so. Relabelling that didn't help is a genuinely
-     interesting result and earns full credit. -->
+Yes, for three of the four labels, and it moved two criteria from MISSED to
+MET on every seed.
 
+- **Accuracy and the big labels:** accuracy rose 15, 20 and 17.5 points, so
+  criterion 1 now holds on all three seeds. The `hot_take` collapse on seed
+  2024 (0.133) is gone (0.593).
+- **`experience` was the clearest test of the diagnosis.** It went from never
+  predicted to 0.50–0.73 F1. The labels didn't change, so the earlier zeros
+  were the training run, not the data.
+- **The `chatter` pull is mostly gone:** the model now calls 16–20 of 40
+  posts `chatter`, against a true 16, instead of 29–37. Its confidence when
+  right rose from about 0.38 to 0.64–0.69.
+- **Against the baseline**, on the same 40 posts: seed 42 is now 0.675
+  accuracy against the zero-shot 0.300. Macro F1 is 0.519 against 0.289,
+  where 3 epochs only matched it (0.302).
 
+**What it didn't fix: `argued`.** It's still MISSED. It's 0.000 on seed 42 and
+under 0.30 on seed 2024. The model now predicts `argued` only 1, 3 and 1 times
+in 40 posts. Training longer changed *where* its posts go, and that's the more
+interesting result. Before, `argued` posts went to `chatter` (the prior).
+Now they're spread across `experience`, `hot_take` and `chatter`, with more
+going to `hot_take` than anywhere else (5, 1 and 5 posts across the three seeds
+went to `hot_take` or `experience` on 42, 7 and 2024 respectively, against 2, 2
+and 0 to `chatter`). On seed 2024, 5 of 6
+went to `hot_take`, the exact boundary my decision rule was written for. The
+model is now failing on the boundary rather than ignoring the label, which
+looks like a genuinely hard pair at 28 training examples rather than
+under-training.
+
+**Two costs to report:**
+
+- **The spread got wider**, from 10 to 12.5 points of accuracy, so the notebook
+  still flags these numbers as unstable. Five posts separate the best seed from
+  the worst.
+- **10 epochs of 186 posts is starting to overfit.** On seed 42, final training
+  loss was 0.48 against a validation loss of 0.98. Validation loss was still
+  inching down at epoch 10 (0.989 to 0.984), so it hadn't turned yet. But
+  more epochs wouldn't be a free next step.
 
 ---
 
